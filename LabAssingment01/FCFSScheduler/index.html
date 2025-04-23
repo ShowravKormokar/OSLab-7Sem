@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCFS Scheduling Algorithm</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>FCFS Scheduling Algorithm</h1>
+        <div class="input-section">
+            <div class="form-group">
+                <label for="process-count">Number of Processes:</label>
+                <input type="number" id="process-count" min="1" max="10" value="1">
+            </div>
+            <button id="generate-btn" class="btn">Generate Process Inputs</button>
+        </div>
+
+        <div id="process-inputs" class="process-inputs-container"></div>
+
+        <div class="actions">
+            <button id="calculate-btn" class="btn calculate-btn">Calculate</button>
+            <button id="reset-btn" class="btn reset-btn">Reset</button>
+        </div>
+
+        <div id="results" class="results-container hidden">
+            <h2>Results</h2>
+
+            <div class="result-section">
+                <h3>Gantt Chart</h3>
+                <div id="gantt-chart" class="gantt-chart"></div>
+                <div class="gantt-timeline" id="gantt-timeline"></div>
+            </div>
+
+            <div class="result-section">
+                <h3>Process Details</h3>
+                <div class="table-container">
+                    <table id="process-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Arrival</th>
+                                <th>Burst</th>
+                                <th>Waiting</th>
+                                <th>Turnaround</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="averages">
+                <div class="avg-box">
+                    <span class="avg-label">Avg Waiting Time:</span>
+                    <span id="avg-waiting" class="avg-value">0</span>
+                </div>
+                <div class="avg-box">
+                    <span class="avg-label">Avg Turnaround Time:</span>
+                    <span id="avg-turnaround" class="avg-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
