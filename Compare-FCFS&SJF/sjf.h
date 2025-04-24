@@ -1,69 +1,65 @@
-#ifndef SJF_H // Start of include guard for the SJF header
-#define SJF_H // Define a unique macro to avoid multiple inclusions
+#ifndef SJF_H
+#define SJF_H
 
-#include "process.h" // Include the shared Process structure definition
+#include "process.h"
 
-// Function to perform SJF (Shortest Job First) Scheduling
+// Function to perform Preemptive SJF (Shortest Remaining Time First) Scheduling
 void sjfScheduling(Process p[], int n, double &avgTAT, double &avgWT)
 {
-    Process temp[100]; // Create a copy of the original process array to work on
+    int remainingTime[100];       // Array to track remaining burst time of each process
+    bool isCompleted[100] = {0};  // Track completion status of processes
+
     for (int i = 0; i < n; i++)
     {
-        temp[i] = p[i]; // Copy each process from input to temp array
+        remainingTime[i] = p[i].burstTime; // Initialize remaining time
     }
 
-    int completed = 0;          // Counter for number of processes completed
-    int currentTime = 0;        // Keeps track of current CPU time
-    int totalTAT = 0;           // Accumulator for total Turnaround Time
-    int totalWT = 0;            // Accumulator for total Waiting Time
-    bool isDone[100] = {false}; // Boolean array to mark if a process has been completed
+    int completed = 0;
+    int currentTime = 0;
+    int totalTAT = 0, totalWT = 0;
+    int minIndex = -1;
+    int minRemaining = 9999;
 
-    // Loop until all processes are completed
     while (completed < n)
     {
-        int idx = -1;        // Index of the selected process for current scheduling
-        int minBurst = 9999; // Store minimum burst time found (initialized to a high value)
+        minIndex = -1;
+        minRemaining = 9999;
 
-        // Find the process with the shortest burst time among the arrived processes
+        // Find process with shortest remaining time that has arrived
         for (int i = 0; i < n; i++)
         {
-            if (!isDone[i] && temp[i].arrivalTime <= currentTime && temp[i].burstTime < minBurst)
+            if (!isCompleted[i] && p[i].arrivalTime <= currentTime && remainingTime[i] < minRemaining && remainingTime[i] > 0)
             {
-                minBurst = temp[i].burstTime; // Update the minimum burst time
-                idx = i;                      // Update the index of the selected process
+                minRemaining = remainingTime[i];
+                minIndex = i;
             }
         }
 
-        // If no process has arrived yet, increment the current time (CPU is idle)
-        if (idx == -1)
+        if (minIndex == -1)
         {
-            currentTime++;
+            currentTime++; // CPU idle
+            continue;
         }
-        else
+
+        // Process runs for 1 unit of time
+        remainingTime[minIndex]--;
+        currentTime++;
+
+        // If process is finished
+        if (remainingTime[minIndex] == 0)
         {
-            // Set the selected process's completion time
-            temp[idx].completionTime = currentTime + temp[idx].burstTime;
+            isCompleted[minIndex] = true;
+            completed++;
 
-            // Calculate turnaround time = completion time - arrival time
-            temp[idx].turnaroundTime = temp[idx].completionTime - temp[idx].arrivalTime;
+            p[minIndex].completionTime = currentTime;
+            p[minIndex].turnaroundTime = p[minIndex].completionTime - p[minIndex].arrivalTime;
+            p[minIndex].waitingTime = p[minIndex].turnaroundTime - p[minIndex].burstTime;
 
-            // Calculate waiting time = turnaround time - burst time
-            temp[idx].waitingTime = temp[idx].turnaroundTime - temp[idx].burstTime;
-
-            // Move time forward to the process's completion time
-            currentTime = temp[idx].completionTime;
-
-            // Mark this process as completed
-            isDone[idx] = true;
-            completed++; // Increment number of completed processes
-
-            // Add to total turnaround time and waiting time
-            totalTAT += temp[idx].turnaroundTime;
-            totalWT += temp[idx].waitingTime;
+            totalTAT += p[minIndex].turnaroundTime;
+            totalWT += p[minIndex].waitingTime;
         }
     }
 
-    // Calculate average turnaround time and waiting time
     avgTAT = (double)totalTAT / n;
     avgWT = (double)totalWT / n;
 }
