@@ -147,7 +147,7 @@ input[type="number"]:focus {
     border-radius: 8px;
 }
 
-.input-group{
+.input-group {
     width: 100%;
 }
 
@@ -239,26 +239,18 @@ tr:hover {
     transition: all 0.3s ease;
 }
 
-.gantt-block:hover {
-    transform: scale(1.05);
-    z-index: 2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+#gantt-timeline {
+    position: relative;
+    height: 20px;
+    margin-top: 10px;
 }
 
-.gantt-timeline {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px;
-    font-size: 0.9rem;
-    color: var(--dark-color);
-    margin-bottom: 1rem;
-}
-
-.gantt-time-marker {
+#gantt-timeline .timeline-marker {
     position: absolute;
-    bottom: -25px;
-    font-size: 0.8rem;
-    color: var(--dark-color);
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #333;
 }
 
 .averages {

@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             maxTime = time;
         });
 
-        createTimeline(maxTime);
+        createTimelineMarkersFromProcesses(processes, maxTime);
     }
 
     // Gantt chart block creation
@@ -145,26 +145,29 @@ document.addEventListener('DOMContentLoaded', () => {
         block.style.backgroundColor = color;
         block.textContent = label;
 
-        const marker = document.createElement('div');
-        marker.className = 'gantt-time-marker';
-        marker.textContent = end;
-        marker.style.left = '100%'; // right-aligned
-        block.appendChild(marker);
-
         el.ganttChart.appendChild(block);
     }
 
     // Create evenly spaced time labels in timeline
-    function createTimeline(max) {
-        const steps = Math.min(max, 10); // limit to 10 labels
-        const stepSize = max / steps;
+    function createTimelineMarkersFromProcesses(processes, maxTime) {
+        const uniqueTimes = new Set();
 
-        for (let i = 0; i <= steps; i++) {
-            const time = Math.round(i * stepSize);
+        // Collect start and finish times
+        processes.forEach(p => {
+            uniqueTimes.add(p.startTime);
+            uniqueTimes.add(p.finishTime);
+        });
+
+        const sortedTimes = Array.from(uniqueTimes).sort((a, b) => a - b);
+        el.ganttTimeline.innerHTML = '';
+
+        sortedTimes.forEach(time => {
             const marker = document.createElement('span');
+            marker.className = 'timeline-marker';
             marker.textContent = time;
+            marker.style.left = `${(time / maxTime) * 100}%`;
             el.ganttTimeline.appendChild(marker);
-        }
+        });
     }
 
     // Reset everything
