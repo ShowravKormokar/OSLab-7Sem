@@ -106,12 +106,6 @@ input[type="number"]:focus {
     text-align: center;
 }
 
-.btn:hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .btn:active {
     transform: translateY(0);
 }
@@ -139,7 +133,6 @@ input[type="number"]:focus {
 
 .process-input-group {
     display: flex;
-    /* flex-wrap: wrap; */
     gap: 1rem;
     margin-bottom: 1rem;
     padding: 1rem;
@@ -210,10 +203,6 @@ th {
 
 tr:nth-child(even) {
     background-color: #f8f9fa;
-}
-
-tr:hover {
-    background-color: #e9f7fe;
 }
 
 .gantt-chart {
