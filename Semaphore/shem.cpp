@@ -25,24 +25,13 @@ void signal()
 }
 
 // Simulated Process A
-void processA()
+void critical_section(int processNum)
 {
     wait(); // Acquire semaphore
-    cout << "Process A enters critical section.\n";
+    cout << "Process " << processNum << " enters critical section.\n";
     sharedCounter = sharedCounter + 1;
-    cout << "Shared Counter (A): " << sharedCounter << endl;
-    cout << "Process A leaves critical section.\n\n";
-    signal(); // Release semaphore
-}
-
-// Simulated Process B
-void processB()
-{
-    wait(); // Acquire semaphore
-    cout << "Process B enters critical section.\n";
-    sharedCounter = sharedCounter + 2;
-    cout << "Shared Counter (B): " << sharedCounter << endl;
-    cout << "Process B leaves critical section.\n\n";
+    cout << "Shared Counter (" << processNum << "): " << sharedCounter << endl;
+    cout << "Process " << processNum << "  leaves critical section.\n\n";
     signal(); // Release semaphore
 }
 
@@ -50,10 +39,8 @@ void processB()
 int main()
 {
     // Simulate calling processes alternately
-    processA();
-    processB();
-    processA();
-    processB();
+    critical_section(1);
+    critical_section(2);
 
     cout << "Final Shared Counter: " << sharedCounter << endl;
 
